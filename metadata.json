@@ -1,0 +1,6 @@
+{
+  "name": "Gyan Bharti Public School",
+  "description": "Official website of Gyan Bharti Public School - Shaping Minds, Building Futures. Admissions open for Nursery to Class 8.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
