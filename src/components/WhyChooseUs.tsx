@@ -36,20 +36,6 @@ export default function WhyChooseUs() {
       badge: 'Expert Team'
     },
     {
-      id: 'smart-classrooms',
-      title: 'Smart Classrooms',
-      icon: <Monitor className="w-8 h-8" />,
-      summary: 'Equipped with digital interactive projection screens, computers, and visual aids for interactive learning.',
-      details: [
-        'Multimedia lessons incorporating 3D models and conceptual animations.',
-        'Digital boards allowing students to solve complex problems in real-time.',
-        'Tech-assisted learning kits for science and mathematics experiments.',
-        'Audio-visual setups for virtual tours and interactive educational games.'
-      ],
-      color: 'from-amber-500 to-orange-600',
-      badge: 'Modern Tech'
-    },
-    {
       id: 'holistic',
       title: 'Focus on Holistic Development',
       icon: <Heart className="w-8 h-8" />,
@@ -112,8 +98,8 @@ export default function WhyChooseUs() {
           </p>
         </div>
 
-        {/* 5-Column / Custom Grid for Pillars */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+        {/* 4-Column / Custom Grid for Pillars */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {pillars.map((pillar, idx) => (
             <motion.div
               key={pillar.id}

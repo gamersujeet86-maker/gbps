@@ -8,7 +8,12 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, Calendar, BookOpen, CheckCircle, ChevronDown, Plus, ClipboardList, Trash2, ShieldAlert } from 'lucide-react';
 import { SchoolInquiry } from '../types';
 
-export default function Admissions() {
+interface AdmissionsProps {
+  savedInquiries: SchoolInquiry[];
+  setSavedInquiries: React.Dispatch<React.SetStateAction<SchoolInquiry[]>>;
+}
+
+export default function Admissions({ savedInquiries, setSavedInquiries }: AdmissionsProps) {
   const [studentName, setStudentName] = useState('');
   const [className, setClassName] = useState('');
   const [parentName, setParentName] = useState('');
@@ -18,19 +23,6 @@ export default function Admissions() {
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successInquiry, setSuccessInquiry] = useState<SchoolInquiry | null>(null);
-  const [savedInquiries, setSavedInquiries] = useState<SchoolInquiry[]>([]);
-
-  // Load existing inquiries from localStorage
-  useEffect(() => {
-    const stored = localStorage.getItem('gbps_inquiries');
-    if (stored) {
-      try {
-        setSavedInquiries(JSON.parse(stored));
-      } catch (err) {
-        console.error("Failed to parse saved inquiries", err);
-      }
-    }
-  }, []);
 
   const classOptions = [
     'Nursery', 'LKG', 'UKG',

@@ -22,6 +22,8 @@ export default function DeploymentGuide({ isOpen, onClose }: DeploymentGuideProp
       title: 'Initialize & Push to GitHub',
       icon: <Github className="w-5 h-5 text-indigo-500" />,
       description: 'Create a repository on GitHub and upload your code.',
+      link: 'https://github.com/new',
+      linkLabel: 'Launch GitHub (Create Repository)',
       instructions: [
         'Go to github.com and sign in (or sign up for a free account).',
         'Click the "+" icon in the upper-right corner and select "New repository".',
@@ -42,6 +44,8 @@ export default function DeploymentGuide({ isOpen, onClose }: DeploymentGuideProp
       title: 'Sign In to Vercel',
       icon: <Globe className="w-5 h-5 text-teal-500" />,
       description: 'Connect your GitHub account to Vercel for continuous deployment.',
+      link: 'https://vercel.com/signup',
+      linkLabel: 'Launch Vercel Signup/Login',
       instructions: [
         'Visit vercel.com and click "Sign Up" or "Log In".',
         'Select "Continue with GitHub" to instantly link your accounts.',
@@ -54,6 +58,8 @@ export default function DeploymentGuide({ isOpen, onClose }: DeploymentGuideProp
       title: 'Import Repository',
       icon: <Terminal className="w-5 h-5 text-amber-500" />,
       description: 'Select your school website repository from your GitHub list.',
+      link: 'https://vercel.com/dashboard',
+      linkLabel: 'Launch Vercel Dashboard',
       instructions: [
         'From your Vercel Dashboard, click the "Add New..." button and select "Project".',
         'In the "Import Git Repository" section, locate your "gyan-bharti-school-website" repository.',
@@ -65,6 +71,8 @@ export default function DeploymentGuide({ isOpen, onClose }: DeploymentGuideProp
       title: 'Configure & Deploy',
       icon: <Award className="w-5 h-5 text-rose-500" />,
       description: 'Double check build settings and kick off your live deployment.',
+      link: 'https://vercel.com/dashboard',
+      linkLabel: 'Launch Vercel Deployments',
       instructions: [
         'Vercel will automatically detect that this is a Vite + React project.',
         'Leave the default Framework Preset as "Vite".',
@@ -192,6 +200,33 @@ export default function DeploymentGuide({ isOpen, onClose }: DeploymentGuideProp
                 />
                 <span className="text-sm font-medium text-slate-700">Mark this milestone as completed</span>
               </label>
+
+              {/* Action Button to Launch Service */}
+              {steps[activeStep].link && (
+                <div className="p-4 bg-amber-50 rounded-2xl border border-amber-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="flex items-center gap-2.5">
+                    <span className="relative flex h-2 w-2">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                    </span>
+                    <div>
+                      <p className="text-xs font-black text-amber-800 uppercase tracking-widest">Active Action</p>
+                      <p className="text-[11px] text-amber-700 font-medium">Click to launch and perform this step live</p>
+                    </div>
+                  </div>
+                  <a
+                    href={steps[activeStep].link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    referrerPolicy="no-referrer"
+                    className="w-full sm:w-auto px-5 py-2.5 bg-slate-900 hover:bg-slate-800 text-amber-500 rounded-xl text-xs font-bold shadow flex items-center justify-center gap-2 hover:-translate-y-0.5 transition-all focus:outline-none"
+                    id={`launch-btn-${activeStep}`}
+                  >
+                    <span>{steps[activeStep].linkLabel}</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-amber-500" />
+                  </a>
+                </div>
+              )}
 
               {/* Instructions */}
               <div className="space-y-3">

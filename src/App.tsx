@@ -9,16 +9,18 @@ import Hero from './components/Hero';
 import WhyChooseUs from './components/WhyChooseUs';
 import Academics from './components/Academics';
 import Admissions from './components/Admissions';
+import FormExplorer from './components/FormExplorer';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import DeploymentGuide from './components/DeploymentGuide';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, ArrowRight, X, Phone, GraduationCap } from 'lucide-react';
+import { SchoolInquiry } from './types';
 
 export default function App() {
   const [isDeploymentGuideOpen, setIsDeploymentGuideOpen] = useState(false);
   const [showFloatBanner, setShowFloatBanner] = useState(false);
-  const [hasStoredInquiries, setHasStoredInquiries] = useState(false);
+  const [savedInquiries, setSavedInquiries] = useState<SchoolInquiry[]>([]);
 
   useEffect(() => {
     // Check if user has stored inquiries to show a gentle reminder banner
@@ -27,7 +29,7 @@ export default function App() {
       try {
         const parsed = JSON.parse(stored);
         if (parsed && parsed.length > 0) {
-          setHasStoredInquiries(true);
+          setSavedInquiries(parsed);
           // Show banner after 3 seconds
           const timer = setTimeout(() => {
             setShowFloatBanner(true);
@@ -39,6 +41,63 @@ export default function App() {
       }
     }
   }, []);
+
+  const handleDeleteInquiry = (id: string) => {
+    const updated = savedInquiries.filter(item => item.id !== id);
+    localStorage.setItem('gbps_inquiries', JSON.stringify(updated));
+    setSavedInquiries(updated);
+  };
+
+  const handleAddDemoInquiries = () => {
+    const demos: SchoolInquiry[] = [
+      {
+        id: 'GB-2026-8041',
+        studentName: 'Aarav Sharma',
+        className: 'Nursery',
+        parentName: 'Ramesh Sharma',
+        phone: '9876543210',
+        email: 'ramesh.sharma@gmail.com',
+        message: 'Aarav is very active, loves sketching, and has completed preparatory play-school program with distinction.',
+        submittedAt: '12 July 2026 at 10:14 AM',
+        status: 'Pending Review'
+      },
+      {
+        id: 'GB-2026-3021',
+        studentName: 'Sneha Verma',
+        className: 'Class 3',
+        parentName: 'Anil Verma',
+        phone: '9911223344',
+        email: 'anil.verma@yahoo.com',
+        message: 'Sneha is transferring from an out-of-station ICSE board school. She is highly proficient in english public reading.',
+        submittedAt: '14 July 2026 at 02:45 PM',
+        status: 'Pending Review'
+      },
+      {
+        id: 'GB-2026-5912',
+        studentName: 'Kabir Malik',
+        className: 'Class 6',
+        parentName: 'Sanjay Malik',
+        phone: '9811556677',
+        email: 'sanjay.malik@outlook.com',
+        message: 'We are seeking scholarship pathways based on athletic performance. Kabir holds multiple local under-11 badminton medals.',
+        submittedAt: '15 July 2026 at 09:30 AM',
+        status: 'Pending Review'
+      },
+      {
+        id: 'GB-2026-1184',
+        studentName: 'Diya Joshi',
+        className: 'Class 1',
+        parentName: 'Prakash Joshi',
+        phone: '9711559900',
+        email: 'prakash.joshi@gmail.com',
+        message: 'Seeking a caring ecosystem emphasizing character values and sports activities. No past medical issues.',
+        submittedAt: '16 July 2026 at 11:20 AM',
+        status: 'Pending Review'
+      }
+    ];
+    localStorage.setItem('gbps_inquiries', JSON.stringify(demos));
+    setSavedInquiries(demos);
+  };
 
   const handleScrollToSection = (sectionId: string) => {
     const target = document.getElementById(sectionId);
@@ -69,7 +128,14 @@ export default function App() {
         <Academics />
 
         {/* Admission Inquiry & Workflow Hub */}
-        <Admissions />
+        <Admissions savedInquiries={savedInquiries} setSavedInquiries={setSavedInquiries} />
+
+        {/* Real-time interactive Forms Ledger Section */}
+        <FormExplorer 
+          savedInquiries={savedInquiries} 
+          onDeleteInquiry={handleDeleteInquiry} 
+          onAddDemoInquiries={handleAddDemoInquiries} 
+        />
 
         {/* Contact info card & router FAQs */}
         <Contact />
@@ -90,7 +156,7 @@ export default function App() {
 
       {/* Floating Stored Inquiries Prompt */}
       <AnimatePresence>
-        {showFloatBanner && hasStoredInquiries && (
+        {showFloatBanner && savedInquiries.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 50, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -118,7 +184,7 @@ export default function App() {
                 </p>
                 <button
                   onClick={() => {
-                    handleScrollToSection('admissions');
+                    handleScrollToSection('submitted-forms');
                     setShowFloatBanner(false);
                   }}
                   className="text-xs font-bold text-amber-500 hover:text-amber-400 flex items-center gap-1 mt-1 cursor-pointer focus:outline-none"

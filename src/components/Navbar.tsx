@@ -21,7 +21,7 @@ export default function Navbar({ onOpenDeploymentGuide }: NavbarProps) {
       setIsScrolled(window.scrollY > 20);
       
       // Determine active section on scroll
-      const sections = ['home', 'why-choose-us', 'academics', 'admissions', 'contact'];
+      const sections = ['home', 'why-choose-us', 'academics', 'admissions', 'submitted-forms', 'contact'];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
@@ -46,6 +46,7 @@ export default function Navbar({ onOpenDeploymentGuide }: NavbarProps) {
     { label: 'Why Choose Us', href: '#why-choose-us', id: 'why-choose-us' },
     { label: 'Academics', href: '#academics', id: 'academics' },
     { label: 'Admissions', href: '#admissions', id: 'admissions' },
+    { label: 'Forms Ledger', href: '#submitted-forms', id: 'submitted-forms' },
     { label: 'Contact', href: '#contact', id: 'contact' },
   ];
 
