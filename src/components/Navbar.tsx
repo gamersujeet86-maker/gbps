@@ -4,14 +4,17 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Menu, X, GraduationCap, Phone, Info, Award, Calendar, BookOpen } from 'lucide-react';
+import { Menu, X, GraduationCap, Phone, Info, Award, Calendar, BookOpen, LogIn, LogOut, UserCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import SchoolLogo from './SchoolLogo';
+import { useApp } from '../context/AppContext';
 
 interface NavbarProps {
-  onOpenDeploymentGuide: () => void;
+  onOpenAuth: (mode: 'login' | 'signup') => void;
 }
 
-export default function Navbar({ onOpenDeploymentGuide }: NavbarProps) {
+export default function Navbar({ onOpenAuth }: NavbarProps) {
+  const { currentUser, logout } = useApp();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
@@ -76,14 +79,6 @@ export default function Navbar({ onOpenDeploymentGuide }: NavbarProps) {
           <span className="hidden sm:inline">Ballabhgarh, Haryana</span>
         </div>
         <div className="flex items-center gap-4">
-          <button 
-            onClick={onOpenDeploymentGuide}
-            className="flex items-center gap-1 text-amber-500 hover:text-amber-400 font-semibold transition-colors focus:outline-none"
-          >
-            <BookOpen className="w-3.5 h-3.5" />
-            <span>Deployment Guide</span>
-          </button>
-          <span className="text-slate-700">|</span>
           <span className="text-amber-500 font-bold uppercase tracking-wider text-[10px] bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
             Admissions Open 2026-27
           </span>
@@ -101,11 +96,8 @@ export default function Navbar({ onOpenDeploymentGuide }: NavbarProps) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           {/* Logo Brand */}
           <a href="#home" onClick={(e) => handleLinkClick(e, '#home')} className="flex items-center gap-3 group">
-            {/* Mock Circular Logo representing the school badge */}
-            <div className="relative w-12 h-12 rounded-full border-2 border-amber-500 bg-slate-900 flex items-center justify-center shadow-md overflow-hidden shrink-0 group-hover:scale-105 transition-transform">
-              <GraduationCap className="w-6 h-6 text-amber-500" />
-              <div className="absolute inset-0 border border-white/10 rounded-full"></div>
-            </div>
+            {/* Real SVG Logo based on physical emblem */}
+            <SchoolLogo className="w-12 h-12 shrink-0 group-hover:scale-105 transition-transform drop-shadow" />
             <div className="flex flex-col">
               <h1 className="text-slate-900 font-display font-extrabold text-base md:text-lg tracking-tight leading-none group-hover:text-amber-600 transition-colors">
                 GYAN BHARTI
@@ -146,6 +138,41 @@ export default function Navbar({ onOpenDeploymentGuide }: NavbarProps) {
 
           {/* Action CTA Button */}
           <div className="hidden md:flex items-center gap-4">
+            {currentUser ? (
+              <div className="flex items-center gap-3">
+                <div className="flex flex-col text-right">
+                  <span className="text-xs font-extrabold text-slate-950 flex items-center gap-1.5 justify-end">
+                    <span className={`w-1.5 h-1.5 rounded-full ${currentUser.role === 'admin' ? 'bg-amber-500' : 'bg-emerald-500'}`}></span>
+                    {currentUser.name}
+                  </span>
+                  <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none mt-0.5">
+                    {currentUser.role === 'admin' ? 'Staff Admin' : 'Parent Account'}
+                  </span>
+                </div>
+                <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 overflow-hidden shrink-0 shadow-sm">
+                  {currentUser.avatar ? (
+                    <img src={currentUser.avatar} alt={currentUser.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <UserCheck className="w-4 h-4 m-2.5 text-slate-500" />
+                  )}
+                </div>
+                <button
+                  onClick={logout}
+                  className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-colors cursor-pointer"
+                  title="Sign Out Session"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={() => onOpenAuth('login')}
+                className="text-xs font-black uppercase tracking-widest text-slate-700 hover:text-slate-900 px-4 py-2 border border-slate-200 hover:border-slate-300 rounded-xl transition-all cursor-pointer"
+              >
+                Sign In
+              </button>
+            )}
+
             <a 
               href="#admissions"
               onClick={(e) => handleLinkClick(e, '#admissions')}
@@ -193,6 +220,47 @@ export default function Navbar({ onOpenDeploymentGuide }: NavbarProps) {
                 </a>
               ))}
               <div className="pt-4 border-t border-slate-100 px-4 flex flex-col gap-3">
+                {currentUser ? (
+                  <div className="bg-slate-50 p-3 rounded-2xl border border-slate-100 space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-slate-100 border border-slate-200 overflow-hidden shrink-0">
+                        {currentUser.avatar ? (
+                          <img src={currentUser.avatar} alt={currentUser.name} className="w-full h-full object-cover" />
+                        ) : (
+                          <UserCheck className="w-4 h-4 m-2.5 text-slate-500" />
+                        )}
+                      </div>
+                      <div className="text-left">
+                        <span className="text-xs font-black text-slate-900 block">{currentUser.name}</span>
+                        <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none block mt-0.5">
+                          {currentUser.role === 'admin' ? 'Staff Administrator' : 'Parent Account'}
+                        </span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setIsMobileMenuOpen(false);
+                        logout();
+                      }}
+                      className="w-full py-2.5 bg-red-50 hover:bg-red-100 border border-red-200/60 text-red-600 rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Sign Out Session</span>
+                    </button>
+                  </div>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setIsMobileMenuOpen(false);
+                      onOpenAuth('login');
+                    }}
+                    className="w-full text-center py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer"
+                  >
+                    <LogIn className="w-4 h-4 text-slate-600" />
+                    <span>Log In / Sign Up</span>
+                  </button>
+                )}
+
                 <a 
                   href="#admissions"
                   onClick={(e) => handleLinkClick(e, '#admissions')}
@@ -200,16 +268,6 @@ export default function Navbar({ onOpenDeploymentGuide }: NavbarProps) {
                 >
                   Apply Online
                 </a>
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
-                    onOpenDeploymentGuide();
-                  }}
-                  className="w-full text-center py-2.5 bg-slate-100 text-slate-700 hover:bg-slate-200 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2"
-                >
-                  <BookOpen className="w-4 h-4 text-amber-600" />
-                  <span>Deployment Guide</span>
-                </button>
               </div>
             </div>
           </motion.div>

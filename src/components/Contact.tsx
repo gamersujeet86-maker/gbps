@@ -10,7 +10,7 @@ import { FAQItem } from '../types';
 
 export default function Contact() {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
-  const [transportMode, setTransportMode] = useState<'bus' | 'car' | 'walk'>('car');
+  const [transportMode, setTransportMode] = useState<'rickshaw' | 'car' | 'walk'>('car');
 
   const faqs: FAQItem[] = [
     {
@@ -24,16 +24,6 @@ export default function Contact() {
       answer: 'Required documents are: (1) Copy of Child’s Birth Certificate, (2) Aadhaar Cards of child & parents, (3) 4 passport size photos of child, (4) Past class reports (if applying for Class 1 to 8), and (5) Transfer Certificate from the previous school.'
     },
     {
-      category: 'Academics',
-      question: 'Are smart classroom sessions included in the standard school fees?',
-      answer: 'Yes! Our digital Smart Classrooms are a core structural feature of the Gyan Bharti learning infrastructure. Interactive projection and visual syllabus lessons are fully integrated for all classes without separate charges.'
-    },
-    {
-      category: 'Facilities',
-      question: 'Is transport available for Samaypur and nearby colonies?',
-      answer: 'Yes, we operate supervised transport buses across Samaypur, Ballabhgarh, Rajeev Colony, and neighboring blocks. All buses have experienced drivers and companion guards.'
-    },
-    {
       category: 'General',
       question: 'What are the school operational hours?',
       answer: 'Our general timing is: (1) Nursery to UKG: 08:30 AM to 12:30 PM, (2) Class 1 to 8: 08:00 AM to 02:00 PM (Monday through Saturday, closed on 2nd Saturdays).'
@@ -42,7 +32,7 @@ export default function Contact() {
 
   const travelEstimates = {
     car: { samaypur: '3 mins', ballabhgarhMetro: '12 mins', sector2: '8 mins' },
-    bus: { samaypur: '5 mins', ballabhgarhMetro: '15 mins', sector2: '10 mins' },
+    rickshaw: { samaypur: '5 mins', ballabhgarhMetro: '15 mins', sector2: '10 mins' },
     walk: { samaypur: '8 mins', ballabhgarhMetro: '45 mins', sector2: '28 mins' }
   };
 
@@ -218,10 +208,10 @@ export default function Contact() {
                       Private Car
                     </button>
                     <button 
-                      onClick={() => setTransportMode('bus')}
-                      className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${transportMode === 'bus' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
+                      onClick={() => setTransportMode('rickshaw')}
+                      className={`px-2.5 py-1 rounded-lg text-[10px] font-bold ${transportMode === 'rickshaw' ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'}`}
                     >
-                      School Bus
+                      Auto Rickshaw
                     </button>
                     <button 
                       onClick={() => setTransportMode('walk')}

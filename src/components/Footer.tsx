@@ -4,13 +4,10 @@
  */
 
 import React from 'react';
-import { GraduationCap, Phone, Mail, MapPin, ExternalLink, HelpCircle, BookOpen, Heart } from 'lucide-react';
+import { Phone, Mail, MapPin, ExternalLink, HelpCircle, Heart } from 'lucide-react';
+import SchoolLogo from './SchoolLogo';
 
-interface FooterProps {
-  onOpenDeploymentGuide: () => void;
-}
-
-export default function Footer({ onOpenDeploymentGuide }: FooterProps) {
+export default function Footer() {
   const handleScrollTo = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
     const target = document.getElementById(targetId);
@@ -31,9 +28,7 @@ export default function Footer({ onOpenDeploymentGuide }: FooterProps) {
         {/* Brand Column */}
         <div className="md:col-span-4 space-y-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-amber-500 flex items-center justify-center text-slate-900 shadow font-bold shrink-0">
-              <GraduationCap className="w-5 h-5 text-slate-900" />
-            </div>
+            <SchoolLogo className="w-12 h-12 shrink-0 drop-shadow" />
             <div>
               <h4 className="text-white font-display font-black tracking-tight text-base">GYAN BHARTI</h4>
               <p className="text-[10px] font-bold text-amber-500 uppercase tracking-widest leading-none mt-0.5">PUBLIC SCHOOL</p>
@@ -112,16 +107,7 @@ export default function Footer({ onOpenDeploymentGuide }: FooterProps) {
             <span>Ballabhgarh, Haryana, India.</span>
           </div>
 
-          {/* Vercel Guide quick-trigger */}
           <div className="flex gap-4 items-center flex-wrap justify-center">
-            <button
-              onClick={onOpenDeploymentGuide}
-              className="text-xs text-amber-500 hover:text-amber-400 font-semibold flex items-center gap-1 bg-amber-500/5 px-3 py-1.5 rounded-lg border border-amber-500/10 hover:border-amber-500/25 transition-all"
-            >
-              <BookOpen className="w-3.5 h-3.5" />
-              <span>Vercel Deployment Guide</span>
-            </button>
-            <span className="text-slate-800 hidden sm:inline">|</span>
             <span className="text-[10px] text-slate-600 flex items-center gap-1">
               Shaping Minds with <Heart className="w-3 h-3 text-amber-600 fill-amber-600" /> & Excellence
             </span>

@@ -12,7 +12,30 @@ export interface SchoolInquiry {
   email: string;
   message?: string;
   submittedAt: string;
-  status: 'Pending Review' | 'Contacted' | 'Approved';
+  status: 'Pending Review' | 'Contacted' | 'Approved' | 'Declined';
+  emailLogs?: Array<{
+    subject: string;
+    sentAt: string;
+    type: 'Approved' | 'Declined';
+    body: string;
+  }>;
+}
+
+export interface User {
+  email: string;
+  name: string;
+  role: 'user' | 'admin';
+  avatar?: string;
+}
+
+export interface Review {
+  id: string;
+  userName: string;
+  userEmail: string;
+  userAvatar?: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
 }
 
 export interface FAQItem {

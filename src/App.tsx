@@ -10,37 +10,30 @@ import WhyChooseUs from './components/WhyChooseUs';
 import Academics from './components/Academics';
 import Admissions from './components/Admissions';
 import FormExplorer from './components/FormExplorer';
+import ReviewsSection from './components/ReviewsSection';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
-import DeploymentGuide from './components/DeploymentGuide';
+import AuthModal from './components/AuthModal';
+import { useApp } from './context/AppContext';
 import { motion, AnimatePresence } from 'motion/react';
 import { Sparkles, ArrowRight, X, Phone, GraduationCap } from 'lucide-react';
 import { SchoolInquiry } from './types';
 
 export default function App() {
-  const [isDeploymentGuideOpen, setIsDeploymentGuideOpen] = useState(false);
+  const { savedInquiries, setSavedInquiries } = useApp();
   const [showFloatBanner, setShowFloatBanner] = useState(false);
-  const [savedInquiries, setSavedInquiries] = useState<SchoolInquiry[]>([]);
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [authModalMode, setAuthModalMode] = useState<'login' | 'signup'>('login');
 
   useEffect(() => {
-    // Check if user has stored inquiries to show a gentle reminder banner
-    const stored = localStorage.getItem('gbps_inquiries');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        if (parsed && parsed.length > 0) {
-          setSavedInquiries(parsed);
-          // Show banner after 3 seconds
-          const timer = setTimeout(() => {
-            setShowFloatBanner(true);
-          }, 3000);
-          return () => clearTimeout(timer);
-        }
-      } catch (e) {
-        console.error(e);
-      }
+    if (savedInquiries && savedInquiries.length > 0) {
+      // Show banner after 3 seconds
+      const timer = setTimeout(() => {
+        setShowFloatBanner(true);
+      }, 3000);
+      return () => clearTimeout(timer);
     }
-  }, []);
+  }, [savedInquiries]);
 
   const handleDeleteInquiry = (id: string) => {
     const updated = savedInquiries.filter(item => item.id !== id);
@@ -114,7 +107,7 @@ export default function App() {
     <div className="min-h-screen flex flex-col bg-slate-50 relative selection:bg-amber-500/30 selection:text-slate-900">
       
       {/* Navbar Brand Header */}
-      <Navbar onOpenDeploymentGuide={() => setIsDeploymentGuideOpen(true)} />
+      <Navbar onOpenAuth={(mode) => { setAuthModalMode(mode); setIsAuthModalOpen(true); }} />
 
       {/* Main Container */}
       <main className="flex-1">
@@ -137,19 +130,28 @@ export default function App() {
           onAddDemoInquiries={handleAddDemoInquiries} 
         />
 
+        {/* Community Testimonials & Live Interactive Reviews Section */}
+        <ReviewsSection 
+          onOpenAuth={(mode) => {
+            setAuthModalMode(mode);
+            setIsAuthModalOpen(true);
+          }} 
+        />
+
         {/* Contact info card & router FAQs */}
         <Contact />
       </main>
 
       {/* Footer Branding Navigation */}
-      <Footer onOpenDeploymentGuide={() => setIsDeploymentGuideOpen(true)} />
+      <Footer />
 
-      {/* Interactive Floating Deployment Tutorial Modal */}
+      {/* Account Login & Registration Dialog */}
       <AnimatePresence>
-        {isDeploymentGuideOpen && (
-          <DeploymentGuide 
-            isOpen={isDeploymentGuideOpen} 
-            onClose={() => setIsDeploymentGuideOpen(false)} 
+        {isAuthModalOpen && (
+          <AuthModal 
+            isOpen={isAuthModalOpen} 
+            onClose={() => setIsAuthModalOpen(false)} 
+            initialMode={authModalMode} 
           />
         )}
       </AnimatePresence>
